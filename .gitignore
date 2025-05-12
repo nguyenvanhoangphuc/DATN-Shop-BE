@@ -2,3 +2,5 @@ myenv/
 .env
 __pycache__/
 **/__pycache__/
+AddDatabase/
+add_users.py

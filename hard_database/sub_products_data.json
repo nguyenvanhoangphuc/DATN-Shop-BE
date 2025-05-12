@@ -1,0 +1,278 @@
+[
+    {
+        "product_name": "Áo thun ngắn tay Cotton Canifa",
+        "variants": [
+            {
+                "color": "Trắng",
+                "size": "M",
+                "old_price": 199000,
+                "discount_percentage": 10.0,
+                "price": 179000,
+                "stock": 50,
+                "image_url": "https://example.com/images/ao_trang_m.jpg"
+            },
+            {
+                "color": "Đen",
+                "size": "L",
+                "old_price": 199000,
+                "discount_percentage": 15.0,
+                "price": 169000,
+                "stock": 40,
+                "image_url": "https://example.com/images/ao_den_l.jpg"
+            }
+        ]
+    },
+    {
+        "product_name": "Áo sơ mi dài tay Elise",
+        "variants": [
+            {
+                "color": "Trắng",
+                "size": "S",
+                "old_price": 299000,
+                "discount_percentage": 5.0,
+                "price": 284050,
+                "stock": 30,
+                "image_url": "https://example.com/images/ao_trang_s.jpg"
+            },
+            {
+                "color": "Xám",
+                "size": "M",
+                "old_price": 299000,
+                "discount_percentage": 10.0,
+                "price": 269100,
+                "stock": 25,
+                "image_url": "https://example.com/images/ao_xam_m.jpg"
+            }
+        ]
+    },
+    {
+        "product_name": "Áo polo ngắn tay Ivy Moda",
+        "variants": [
+            {
+                "color": "Xanh navy",
+                "size": "L",
+                "old_price": 249000,
+                "discount_percentage": 20.0,
+                "price": 199200,
+                "stock": 40,
+                "image_url": "https://example.com/images/ao_polo_xanh_l.jpg"
+            },
+            {
+                "color": "Đỏ",
+                "size": "M",
+                "old_price": 249000,
+                "discount_percentage": 15.0,
+                "price": 211650,
+                "stock": 35,
+                "image_url": "https://example.com/images/ao_polo_do_m.jpg"
+            }
+        ]
+    },
+    {
+        "product_name": "Áo len dài tay Nem Fashion",
+        "variants": [
+            {
+                "color": "Xám ghi",
+                "size": "M",
+                "old_price": 399000,
+                "discount_percentage": 10.0,
+                "price": 359100,
+                "stock": 20,
+                "image_url": "https://example.com/images/ao_len_xam_m.jpg"
+            },
+            {
+                "color": "Đen",
+                "size": "L",
+                "old_price": 399000,
+                "discount_percentage": 15.0,
+                "price": 339150,
+                "stock": 15,
+                "image_url": "https://example.com/images/ao_len_den_l.jpg"
+            }
+        ]
+    },
+    {
+        "product_name": "Áo thun cổ tròn Cotton Elise",
+        "variants": [
+            {
+                "color": "Trắng",
+                "size": "S",
+                "old_price": 199000,
+                "discount_percentage": 5.0,
+                "price": 189050,
+                "stock": 50,
+                "image_url": "https://example.com/images/ao_thun_trang_s.jpg"
+            },
+            {
+                "color": "Hồng",
+                "size": "M",
+                "old_price": 199000,
+                "discount_percentage": 10.0,
+                "price": 179100,
+                "stock": 45,
+                "image_url": "https://example.com/images/ao_thun_hong_m.jpg"
+            }
+        ]
+    },
+    {
+        "product_name": "Áo khoác dài tay Ivy Moda",
+        "variants": [
+            {
+                "color": "Đen",
+                "size": "L",
+                "old_price": 599000,
+                "discount_percentage": 20.0,
+                "price": 479200,
+                "stock": 25,
+                "image_url": "https://example.com/images/ao_khoac_den_l.jpg"
+            },
+            {
+                "color": "Xám",
+                "size": "M",
+                "old_price": 599000,
+                "discount_percentage": 15.0,
+                "price": 509150,
+                "stock": 20,
+                "image_url": "https://example.com/images/ao_khoac_xam_m.jpg"
+            }
+        ]
+    },
+    {
+        "product_name": "Quần shorts nam Cotton Canifa",
+        "variants": [
+            {
+                "color": "Đen",
+                "size": "M",
+                "old_price": 249000,
+                "discount_percentage": 5.0,
+                "price": 236550,
+                "stock": 30,
+                "image_url": "https://example.com/images/quan_short_den_m.jpg"
+            },
+            {
+                "color": "Nâu",
+                "size": "L",
+                "old_price": 249000,
+                "discount_percentage": 10.0,
+                "price": 224100,
+                "stock": 25,
+                "image_url": "https://example.com/images/quan_short_nau_l.jpg"
+            }
+        ]
+    },
+    {
+        "product_name": "Quần tây nữ Elise",
+        "variants": [
+            {
+                "color": "Be",
+                "size": "S",
+                "old_price": 499000,
+                "discount_percentage": 10.0,
+                "price": 449100,
+                "stock": 20,
+                "image_url": "https://example.com/images/quan_tay_be_s.jpg"
+            },
+            {
+                "color": "Xám",
+                "size": "M",
+                "old_price": 499000,
+                "discount_percentage": 15.0,
+                "price": 424150,
+                "stock": 18,
+                "image_url": "https://example.com/images/quan_tay_xam_m.jpg"
+            }
+        ]
+    },
+    {
+        "product_name": "Quần thể thao nam Ivy Moda",
+        "variants": [
+            {
+                "color": "Xám",
+                "size": "M",
+                "old_price": 299000,
+                "discount_percentage": 5.0,
+                "price": 284050,
+                "stock": 40,
+                "image_url": "https://example.com/images/quan_the_thao_xam_m.jpg"
+            },
+            {
+                "color": "Xanh",
+                "size": "L",
+                "old_price": 299000,
+                "discount_percentage": 10.0,
+                "price": 269100,
+                "stock": 35,
+                "image_url": "https://example.com/images/quan_the_thao_xanh_l.jpg"
+            }
+        ]
+    },
+    {
+        "product_name": "Quần jeans dài Nem Fashion",
+        "variants": [
+            {
+                "color": "Xanh đậm",
+                "size": "L",
+                "old_price": 599000,
+                "discount_percentage": 15.0,
+                "price": 509150,
+                "stock": 20,
+                "image_url": "https://example.com/images/quan_jeans_xanh_l.jpg"
+            },
+            {
+                "color": "Đen",
+                "size": "M",
+                "old_price": 599000,
+                "discount_percentage": 10.0,
+                "price": 539100,
+                "stock": 25,
+                "image_url": "https://example.com/images/quan_jeans_den_m.jpg"
+            }
+        ]
+    },
+    {
+        "product_name": "Quần lửng nữ Elise",
+        "variants": [
+            {
+                "color": "Đen",
+                "size": "S",
+                "old_price": 199000,
+                "discount_percentage": 5.0,
+                "price": 189050,
+                "stock": 40,
+                "image_url": "https://example.com/images/quan_lung_den_s.jpg"
+            },
+            {
+                "color": "Nâu",
+                "size": "M",
+                "old_price": 199000,
+                "discount_percentage": 10.0,
+                "price": 179100,
+                "stock": 45,
+                "image_url": "https://example.com/images/quan_lung_nau_m.jpg"
+            }
+        ]
+    },
+    {
+        "product_name": "Quần kaki dài Ivy Moda",
+        "variants": [
+            {
+                "color": "Nâu",
+                "size": "L",
+                "old_price": 499000,
+                "discount_percentage": 10.0,
+                "price": 449100,
+                "stock": 20,
+                "image_url": "https://example.com/images/quan_kaki_nau_l.jpg"
+            },
+            {
+                "color": "Đen",
+                "size": "M",
+                "old_price": 499000,
+                "discount_percentage": 15.0,
+                "price": 424150,
+                "stock": 18,
+                "image_url": "https://example.com/images/quan_kaki_den_m.jpg"
+            }
+        ]
+    }
+]

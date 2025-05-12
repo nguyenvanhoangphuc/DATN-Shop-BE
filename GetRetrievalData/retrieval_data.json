@@ -1,0 +1,410 @@
+[
+  {
+    "metadata": {
+      "id_sub_product": 1,
+      "name_product": "Áo thun ngắn tay Cotton Canifa",
+      "category": "Áo ngắn tay",
+      "brand": "Canifa",
+      "material": "Cotton",
+      "image_url": "https://example.com/images/ao_ngan_canifa.jpg",
+      "color": "Trắng",
+      "size": "M",
+      "price": 179000,
+      "stock": 50,
+      "sold_per_month": 0,
+      "sub_image_url": "https://example.com/images/ao_trang_m.jpg"
+    },
+    "content": "Áo thun ngắn tay Cotton Canifa - Canifa (Trắng, M)\nÁo thun đơn giản, thoáng mát cho mùa hè.\nÁo thun nam ngắn tay chất liệu cotton, thương hiệu Canifa, màu trắng, co giãn tốt."
+  },
+  {
+    "metadata": {
+      "id_sub_product": 2,
+      "name_product": "Áo thun ngắn tay Cotton Canifa",
+      "category": "Áo ngắn tay",
+      "brand": "Canifa",
+      "material": "Cotton",
+      "image_url": "https://example.com/images/ao_ngan_canifa.jpg",
+      "color": "Đen",
+      "size": "L",
+      "price": 169000,
+      "stock": 40,
+      "sold_per_month": 0,
+      "sub_image_url": "https://example.com/images/ao_den_l.jpg"
+    },
+    "content": "Áo thun ngắn tay Cotton Canifa - Canifa (Đen, L)\nÁo thun đơn giản, thoáng mát cho mùa hè.\nÁo thun nam ngắn tay chất liệu cotton, thương hiệu Canifa, màu trắng, co giãn tốt."
+  },
+  {
+    "metadata": {
+      "id_sub_product": 3,
+      "name_product": "Áo sơ mi dài tay Elise",
+      "category": "Áo dài tay",
+      "brand": "Elise",
+      "material": "Lụa",
+      "image_url": "https://example.com/images/ao_dai_elise.jpg",
+      "color": "Trắng",
+      "size": "S",
+      "price": 284050,
+      "stock": 30,
+      "sold_per_month": 0,
+      "sub_image_url": "https://example.com/images/ao_trang_s.jpg"
+    },
+    "content": "Áo sơ mi dài tay Elise - Elise (Trắng, S)\nSơ mi nữ thanh lịch cho dân văn phòng.\nChất liệu lụa mềm mại, thiết kế cổ Đức, tay dài bo nhẹ, thương hiệu Elise."
+  },
+  {
+    "metadata": {
+      "id_sub_product": 4,
+      "name_product": "Áo sơ mi dài tay Elise",
+      "category": "Áo dài tay",
+      "brand": "Elise",
+      "material": "Lụa",
+      "image_url": "https://example.com/images/ao_dai_elise.jpg",
+      "color": "Xám",
+      "size": "M",
+      "price": 269100,
+      "stock": 25,
+      "sold_per_month": 0,
+      "sub_image_url": "https://example.com/images/ao_xam_m.jpg"
+    },
+    "content": "Áo sơ mi dài tay Elise - Elise (Xám, M)\nSơ mi nữ thanh lịch cho dân văn phòng.\nChất liệu lụa mềm mại, thiết kế cổ Đức, tay dài bo nhẹ, thương hiệu Elise."
+  },
+  {
+    "metadata": {
+      "id_sub_product": 5,
+      "name_product": "Áo polo ngắn tay Ivy Moda",
+      "category": "Áo ngắn tay",
+      "brand": "Ivy Moda",
+      "material": "Nylon",
+      "image_url": "https://example.com/images/ao_ngan_ivy.jpg",
+      "color": "Xanh navy",
+      "size": "L",
+      "price": 199200,
+      "stock": 40,
+      "sold_per_month": 0,
+      "sub_image_url": "https://example.com/images/ao_polo_xanh_l.jpg"
+    },
+    "content": "Áo polo ngắn tay Ivy Moda - Ivy Moda (Xanh navy, L)\nÁo polo trẻ trung, phù hợp đi học và đi chơi.\nÁo polo nam ngắn tay, cotton pha nylon, thương hiệu Ivy Moda, màu navy."
+  },
+  {
+    "metadata": {
+      "id_sub_product": 6,
+      "name_product": "Áo polo ngắn tay Ivy Moda",
+      "category": "Áo ngắn tay",
+      "brand": "Ivy Moda",
+      "material": "Nylon",
+      "image_url": "https://example.com/images/ao_ngan_ivy.jpg",
+      "color": "Đỏ",
+      "size": "M",
+      "price": 211650,
+      "stock": 35,
+      "sold_per_month": 0,
+      "sub_image_url": "https://example.com/images/ao_polo_do_m.jpg"
+    },
+    "content": "Áo polo ngắn tay Ivy Moda - Ivy Moda (Đỏ, M)\nÁo polo trẻ trung, phù hợp đi học và đi chơi.\nÁo polo nam ngắn tay, cotton pha nylon, thương hiệu Ivy Moda, màu navy."
+  },
+  {
+    "metadata": {
+      "id_sub_product": 7,
+      "name_product": "Áo len dài tay Nem Fashion",
+      "category": "Áo dài tay",
+      "brand": "Nem Fashion",
+      "material": "Polyester",
+      "image_url": "https://example.com/images/ao_dai_nem.jpg",
+      "color": "Xám ghi",
+      "size": "M",
+      "price": 359100,
+      "stock": 20,
+      "sold_per_month": 0,
+      "sub_image_url": "https://example.com/images/ao_len_xam_m.jpg"
+    },
+    "content": "Áo len dài tay Nem Fashion - Nem Fashion (Xám ghi, M)\nÁo len giữ ấm mùa đông, thiết kế hiện đại.\nÁo len tay dài, chất liệu polyester giữ nhiệt tốt, màu xám ghi."
+  },
+  {
+    "metadata": {
+      "id_sub_product": 8,
+      "name_product": "Áo len dài tay Nem Fashion",
+      "category": "Áo dài tay",
+      "brand": "Nem Fashion",
+      "material": "Polyester",
+      "image_url": "https://example.com/images/ao_dai_nem.jpg",
+      "color": "Đen",
+      "size": "L",
+      "price": 339150,
+      "stock": 15,
+      "sold_per_month": 0,
+      "sub_image_url": "https://example.com/images/ao_len_den_l.jpg"
+    },
+    "content": "Áo len dài tay Nem Fashion - Nem Fashion (Đen, L)\nÁo len giữ ấm mùa đông, thiết kế hiện đại.\nÁo len tay dài, chất liệu polyester giữ nhiệt tốt, màu xám ghi."
+  },
+  {
+    "metadata": {
+      "id_sub_product": 9,
+      "name_product": "Áo thun cổ tròn Cotton Elise",
+      "category": "Áo ngắn tay",
+      "brand": "Elise",
+      "material": "Cotton",
+      "image_url": "https://example.com/images/ao_ngan_elise.jpg",
+      "color": "Trắng",
+      "size": "S",
+      "price": 189050,
+      "stock": 50,
+      "sold_per_month": 0,
+      "sub_image_url": "https://example.com/images/ao_thun_trang_s.jpg"
+    },
+    "content": "Áo thun cổ tròn Cotton Elise - Elise (Trắng, S)\nMẫu áo cổ tròn cơ bản cho nữ.\nChất cotton thoáng mát, form vừa, phù hợp mặc trong hoặc mặc lẻ."
+  },
+  {
+    "metadata": {
+      "id_sub_product": 10,
+      "name_product": "Áo thun cổ tròn Cotton Elise",
+      "category": "Áo ngắn tay",
+      "brand": "Elise",
+      "material": "Cotton",
+      "image_url": "https://example.com/images/ao_ngan_elise.jpg",
+      "color": "Hồng",
+      "size": "M",
+      "price": 179100,
+      "stock": 45,
+      "sold_per_month": 0,
+      "sub_image_url": "https://example.com/images/ao_thun_hong_m.jpg"
+    },
+    "content": "Áo thun cổ tròn Cotton Elise - Elise (Hồng, M)\nMẫu áo cổ tròn cơ bản cho nữ.\nChất cotton thoáng mát, form vừa, phù hợp mặc trong hoặc mặc lẻ."
+  },
+  {
+    "metadata": {
+      "id_sub_product": 11,
+      "name_product": "Áo khoác dài tay Ivy Moda",
+      "category": "Áo dài tay",
+      "brand": "Ivy Moda",
+      "material": "Lụa",
+      "image_url": "https://example.com/images/ao_dai_ivy.jpg",
+      "color": "Đen",
+      "size": "L",
+      "price": 479200,
+      "stock": 25,
+      "sold_per_month": 0,
+      "sub_image_url": "https://example.com/images/ao_khoac_den_l.jpg"
+    },
+    "content": "Áo khoác dài tay Ivy Moda - Ivy Moda (Đen, L)\nÁo khoác thời trang, kiểu dáng Hàn Quốc.\nThiết kế dài tay, vải lụa pha polyester, giữ ấm tốt và nhẹ."
+  },
+  {
+    "metadata": {
+      "id_sub_product": 12,
+      "name_product": "Áo khoác dài tay Ivy Moda",
+      "category": "Áo dài tay",
+      "brand": "Ivy Moda",
+      "material": "Lụa",
+      "image_url": "https://example.com/images/ao_dai_ivy.jpg",
+      "color": "Xám",
+      "size": "M",
+      "price": 509150,
+      "stock": 20,
+      "sold_per_month": 0,
+      "sub_image_url": "https://example.com/images/ao_khoac_xam_m.jpg"
+    },
+    "content": "Áo khoác dài tay Ivy Moda - Ivy Moda (Xám, M)\nÁo khoác thời trang, kiểu dáng Hàn Quốc.\nThiết kế dài tay, vải lụa pha polyester, giữ ấm tốt và nhẹ."
+  },
+  {
+    "metadata": {
+      "id_sub_product": 13,
+      "name_product": "Quần shorts nam Cotton Canifa",
+      "category": "Quần ngắn",
+      "brand": "Canifa",
+      "material": "Cotton",
+      "image_url": "https://example.com/images/quan_ngan_canifa.jpg",
+      "color": "Đen",
+      "size": "M",
+      "price": 236550,
+      "stock": 30,
+      "sold_per_month": 0,
+      "sub_image_url": "https://example.com/images/quan_short_den_m.jpg"
+    },
+    "content": "Quần shorts nam Cotton Canifa - Canifa (Đen, M)\nQuần short thể thao, thấm hút mồ hôi.\nChất liệu cotton 100%, 2 túi bên hông, màu đen, dành cho nam."
+  },
+  {
+    "metadata": {
+      "id_sub_product": 14,
+      "name_product": "Quần shorts nam Cotton Canifa",
+      "category": "Quần ngắn",
+      "brand": "Canifa",
+      "material": "Cotton",
+      "image_url": "https://example.com/images/quan_ngan_canifa.jpg",
+      "color": "Nâu",
+      "size": "L",
+      "price": 224100,
+      "stock": 25,
+      "sold_per_month": 0,
+      "sub_image_url": "https://example.com/images/quan_short_nau_l.jpg"
+    },
+    "content": "Quần shorts nam Cotton Canifa - Canifa (Nâu, L)\nQuần short thể thao, thấm hút mồ hôi.\nChất liệu cotton 100%, 2 túi bên hông, màu đen, dành cho nam."
+  },
+  {
+    "metadata": {
+      "id_sub_product": 15,
+      "name_product": "Quần tây nữ Elise",
+      "category": "Quần dài",
+      "brand": "Elise",
+      "material": "Lụa",
+      "image_url": "https://example.com/images/quan_dai_elise.jpg",
+      "color": "Be",
+      "size": "S",
+      "price": 449100,
+      "stock": 20,
+      "sold_per_month": 0,
+      "sub_image_url": "https://example.com/images/quan_tay_be_s.jpg"
+    },
+    "content": "Quần tây nữ Elise - Elise (Be, S)\nQuần dài công sở nữ, thanh lịch.\nChất liệu lụa pha mềm mịn, màu be nhạt, lưng cao."
+  },
+  {
+    "metadata": {
+      "id_sub_product": 16,
+      "name_product": "Quần tây nữ Elise",
+      "category": "Quần dài",
+      "brand": "Elise",
+      "material": "Lụa",
+      "image_url": "https://example.com/images/quan_dai_elise.jpg",
+      "color": "Xám",
+      "size": "M",
+      "price": 424150,
+      "stock": 18,
+      "sold_per_month": 0,
+      "sub_image_url": "https://example.com/images/quan_tay_xam_m.jpg"
+    },
+    "content": "Quần tây nữ Elise - Elise (Xám, M)\nQuần dài công sở nữ, thanh lịch.\nChất liệu lụa pha mềm mịn, màu be nhạt, lưng cao."
+  },
+  {
+    "metadata": {
+      "id_sub_product": 17,
+      "name_product": "Quần thể thao nam Ivy Moda",
+      "category": "Quần ngắn",
+      "brand": "Ivy Moda",
+      "material": "Nylon",
+      "image_url": "https://example.com/images/quan_ngan_ivy.jpg",
+      "color": "Xám",
+      "size": "M",
+      "price": 284050,
+      "stock": 40,
+      "sold_per_month": 0,
+      "sub_image_url": "https://example.com/images/quan_the_thao_xam_m.jpg"
+    },
+    "content": "Quần thể thao nam Ivy Moda - Ivy Moda (Xám, M)\nPhong cách năng động, vải mát.\nQuần short thể thao, vải nylon chống nhăn, co giãn nhẹ."
+  },
+  {
+    "metadata": {
+      "id_sub_product": 18,
+      "name_product": "Quần thể thao nam Ivy Moda",
+      "category": "Quần ngắn",
+      "brand": "Ivy Moda",
+      "material": "Nylon",
+      "image_url": "https://example.com/images/quan_ngan_ivy.jpg",
+      "color": "Xanh",
+      "size": "L",
+      "price": 269100,
+      "stock": 35,
+      "sold_per_month": 0,
+      "sub_image_url": "https://example.com/images/quan_the_thao_xanh_l.jpg"
+    },
+    "content": "Quần thể thao nam Ivy Moda - Ivy Moda (Xanh, L)\nPhong cách năng động, vải mát.\nQuần short thể thao, vải nylon chống nhăn, co giãn nhẹ."
+  },
+  {
+    "metadata": {
+      "id_sub_product": 19,
+      "name_product": "Quần jeans dài Nem Fashion",
+      "category": "Quần dài",
+      "brand": "Nem Fashion",
+      "material": "Polyester",
+      "image_url": "https://example.com/images/quan_dai_nem.jpg",
+      "color": "Xanh đậm",
+      "size": "L",
+      "price": 509150,
+      "stock": 20,
+      "sold_per_month": 0,
+      "sub_image_url": "https://example.com/images/quan_jeans_xanh_l.jpg"
+    },
+    "content": "Quần jeans dài Nem Fashion - Nem Fashion (Xanh đậm, L)\nQuần jeans basic, form skinny.\nJeans dài nữ, chất polyester bền màu, màu xanh đậm."
+  },
+  {
+    "metadata": {
+      "id_sub_product": 20,
+      "name_product": "Quần jeans dài Nem Fashion",
+      "category": "Quần dài",
+      "brand": "Nem Fashion",
+      "material": "Polyester",
+      "image_url": "https://example.com/images/quan_dai_nem.jpg",
+      "color": "Đen",
+      "size": "M",
+      "price": 539100,
+      "stock": 25,
+      "sold_per_month": 0,
+      "sub_image_url": "https://example.com/images/quan_jeans_den_m.jpg"
+    },
+    "content": "Quần jeans dài Nem Fashion - Nem Fashion (Đen, M)\nQuần jeans basic, form skinny.\nJeans dài nữ, chất polyester bền màu, màu xanh đậm."
+  },
+  {
+    "metadata": {
+      "id_sub_product": 21,
+      "name_product": "Quần lửng nữ Elise",
+      "category": "Quần ngắn",
+      "brand": "Elise",
+      "material": "Cotton",
+      "image_url": "https://example.com/images/quan_ngan_elise.jpg",
+      "color": "Đen",
+      "size": "S",
+      "price": 189050,
+      "stock": 40,
+      "sold_per_month": 0,
+      "sub_image_url": "https://example.com/images/quan_lung_den_s.jpg"
+    },
+    "content": "Quần lửng nữ Elise - Elise (Đen, S)\nQuần lửng chất cotton, thoải mái mùa hè.\nQuần lửng cạp cao, vải cotton mềm, form suông."
+  },
+  {
+    "metadata": {
+      "id_sub_product": 22,
+      "name_product": "Quần lửng nữ Elise",
+      "category": "Quần ngắn",
+      "brand": "Elise",
+      "material": "Cotton",
+      "image_url": "https://example.com/images/quan_ngan_elise.jpg",
+      "color": "Nâu",
+      "size": "M",
+      "price": 179100,
+      "stock": 45,
+      "sold_per_month": 0,
+      "sub_image_url": "https://example.com/images/quan_lung_nau_m.jpg"
+    },
+    "content": "Quần lửng nữ Elise - Elise (Nâu, M)\nQuần lửng chất cotton, thoải mái mùa hè.\nQuần lửng cạp cao, vải cotton mềm, form suông."
+  },
+  {
+    "metadata": {
+      "id_sub_product": 23,
+      "name_product": "Quần kaki dài Ivy Moda",
+      "category": "Quần dài",
+      "brand": "Ivy Moda",
+      "material": "Lụa",
+      "image_url": "https://example.com/images/quan_dai_ivy.jpg",
+      "color": "Nâu",
+      "size": "L",
+      "price": 449100,
+      "stock": 20,
+      "sold_per_month": 0,
+      "sub_image_url": "https://example.com/images/quan_kaki_nau_l.jpg"
+    },
+    "content": "Quần kaki dài Ivy Moda - Ivy Moda (Nâu, L)\nThiết kế nam tính, phong cách lịch sự.\nQuần kaki nam dài, vải lụa pha, thích hợp đi làm hoặc đi chơi."
+  },
+  {
+    "metadata": {
+      "id_sub_product": 24,
+      "name_product": "Quần kaki dài Ivy Moda",
+      "category": "Quần dài",
+      "brand": "Ivy Moda",
+      "material": "Lụa",
+      "image_url": "https://example.com/images/quan_dai_ivy.jpg",
+      "color": "Đen",
+      "size": "M",
+      "price": 424150,
+      "stock": 18,
+      "sold_per_month": 0,
+      "sub_image_url": "https://example.com/images/quan_kaki_den_m.jpg"
+    },
+    "content": "Quần kaki dài Ivy Moda - Ivy Moda (Đen, M)\nThiết kế nam tính, phong cách lịch sự.\nQuần kaki nam dài, vải lụa pha, thích hợp đi làm hoặc đi chơi."
+  }
+]
