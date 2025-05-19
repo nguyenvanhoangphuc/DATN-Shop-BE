@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from app.models import StatusEnum
 
 # ==========================
 # CATEGORY MODEL
@@ -11,6 +12,7 @@ class Category(models.Model):
     parent = models.ForeignKey(
         'self', on_delete=models.CASCADE, null=True, blank=True, related_name='subcategories'
     )
+    status_enum = models.IntegerField(choices=StatusEnum.choices, default=StatusEnum.ACTIVE)
 
     def __str__(self):
         return self.name
@@ -23,6 +25,8 @@ class Material(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255, null=False)
     description = models.TextField(blank=True, null=True)
+    status_enum = models.IntegerField(choices=StatusEnum.choices, default=StatusEnum.ACTIVE)
+
 
     def __str__(self):
         return self.name
@@ -35,6 +39,7 @@ class Brand(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255, null=False)
     description = models.TextField(blank=True, null=True)
+    status_enum = models.IntegerField(choices=StatusEnum.choices, default=StatusEnum.ACTIVE)
 
     def __str__(self):
         return self.name
@@ -53,6 +58,7 @@ class Product(models.Model):
     material = models.ForeignKey(Material, on_delete=models.SET_NULL, null=True, related_name="products")
     image_url = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    status_enum = models.IntegerField(choices=StatusEnum.choices, default=StatusEnum.ACTIVE)
 
     def __str__(self):
         return self.name
@@ -72,6 +78,7 @@ class SubProduct(models.Model):
     image_url = models.TextField(blank=True, null=True)
     # saled_per_month	INT NOT NULL DEFAULT 0	Số lượng sản phẩm đã bán mỗi tháng
     saled_per_month = models.IntegerField(default=0, null=False)  # Số lượng sản phẩm đã bán mỗi tháng
+    status_enum = models.IntegerField(choices=StatusEnum.choices, default=StatusEnum.ACTIVE)
 
 
     def __str__(self):
@@ -84,7 +91,7 @@ class SubProduct(models.Model):
 class ProductSubProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="sub_products")
     sub_product = models.ForeignKey(SubProduct, on_delete=models.CASCADE, related_name="products")
-
+    status_enum = models.IntegerField(choices=StatusEnum.choices, default=StatusEnum.ACTIVE)
     class Meta:
         unique_together = ('product', 'sub_product')
 

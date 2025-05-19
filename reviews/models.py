@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from app.models import StatusEnum
 
 # ==========================
 # REVIEW MODEL
@@ -10,6 +11,7 @@ class Review(models.Model):
     rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     comment = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    status_enum = models.IntegerField(choices=StatusEnum.choices, default=StatusEnum.ACTIVE)
 
     def __str__(self):
         return f"Review {self.id} - {self.sub_product} - {self.rating}⭐"
