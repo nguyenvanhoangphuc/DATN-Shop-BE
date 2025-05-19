@@ -1,4 +1,6 @@
 from django.db import models
+from enum import Enum
+from app.models import StatusEnum
 
 class User(models.Model):
     ROLE_CHOICES = [
@@ -12,6 +14,7 @@ class User(models.Model):
     username = models.CharField(max_length=255, unique=True)
     email = models.EmailField(unique=True)
     password_hash = models.TextField()
+    refresh_token = models.CharField(max_length=255, null= True, blank=True)
     image_url = models.TextField(blank=True, null=True)
     phone = models.CharField(max_length=20, blank=True, null=True)
     address = models.TextField(blank=True, null=True)
@@ -22,6 +25,7 @@ class User(models.Model):
     note = models.TextField(blank=True, null=True)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='customer')
     created_at = models.DateTimeField(auto_now_add=True)
+    status_enum = models.IntegerField(choices=StatusEnum.choices, default=StatusEnum.ACTIVE)
     
     def __str__(self):
         return self.username
