@@ -1,9 +1,11 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from app.models import StatusEnum
 
 # ==========================
 # COUPON MODEL
 # ==========================
+
 class Coupon(models.Model):
     code = models.CharField(max_length=50, unique=True)
     discount_percentage = models.DecimalField(
@@ -13,6 +15,7 @@ class Coupon(models.Model):
     quantity = models.IntegerField(validators=[MinValueValidator(0)])
     valid_from = models.DateTimeField()
     valid_until = models.DateTimeField()
+    status_enum = models.IntegerField(choices=StatusEnum.choices, default=StatusEnum.ACTIVE)
 
     def __str__(self):
         return f"{self.code} - {self.discount_percentage}%"

@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
+from app.models import StatusEnum
 
 # ==========================
 # ORDER MODEL
@@ -25,6 +26,7 @@ class Order(models.Model):
     total_price = models.BigIntegerField(null=False)
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
     created_at = models.DateTimeField(auto_now_add=True)
+    status_enum = models.IntegerField(choices=StatusEnum.choices, default=StatusEnum.ACTIVE)
 
     def __str__(self):
         return f"Order {self.id} - {self.user.username} - {self.status}"
@@ -39,6 +41,7 @@ class OrderItem(models.Model):
     sub_product = models.ForeignKey("products.SubProduct", on_delete=models.CASCADE, related_name="order_items")
     quantity = models.IntegerField(default=1)
     price = models.BigIntegerField(null=False)
+    status_enum = models.IntegerField(choices=StatusEnum.choices, default=StatusEnum.ACTIVE)
 
     def __str__(self):
         return f"{self.quantity} x {self.sub_product} in Order {self.order.id}"
@@ -54,6 +57,7 @@ class CartItem(models.Model):
     sub_product = models.ForeignKey('products.SubProduct', on_delete=models.CASCADE, related_name="cart_items")
     quantity = models.IntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
+    status_enum = models.IntegerField(choices=StatusEnum.choices, default=StatusEnum.ACTIVE)
 
     def __str__(self):
         return f"{self.quantity} x {self.sub_product} in {self.user.username}'s cart"
