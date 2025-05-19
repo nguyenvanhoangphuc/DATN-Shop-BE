@@ -21,6 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-r(6qkqs%n(we*z)8)jrayg-^3u4m3ojafe*^r2^^^f&q5uhj9v'
+JWT_SECRET_KEY = 'django-insecure-r(6qkqs%n(we*z)8)jrayg-^3u4m3ojafe*^r2^^^f&q5uhj9v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # my app
+    'authentication',
     'users',
     'products',
     'orders',
@@ -46,6 +48,14 @@ INSTALLED_APPS = [
     'reviews',
     'coupons',
     'wishlist',
+    # django rest framework
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'drf_yasg',
+
+    # upload image
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
@@ -57,6 +67,26 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'authentication.backends.JWTAuthentication'
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'config.pagination.CustomPageNumberPagination',
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# CLOUDINARY_STORAGE = {
+#     'CLOUD_NAME': 'dkdtkcrqq',
+#     'API_KEY': '343522123437734',
+#     'API_SECRET': 'pe6qgHyoWNiN1_pwjI2VJdHd6Bs',
+# }
+CLOUDINARY = {
+    'cloud_name': 'dkdtkcrqq',
+    'api_key': '343522123437734',
+    'api_secret': 'pe6qgHyoWNiN1_pwjI2VJdHd6Bs',
+}
 
 ROOT_URLCONF = 'config.urls'
 
