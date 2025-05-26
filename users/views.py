@@ -1,30 +1,17 @@
-from django.shortcuts import render
 from django.db.models import Q
-from django.db import transaction
-from django.utils import timezone
-from django.http import JsonResponse
-from django.db.models import Value, BooleanField
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
 from rest_framework.response import Response
 from rest_framework import viewsets, generics, status
 from rest_framework.exceptions import ValidationError
-# from companyServices.models import Companies
-from users.serializers import UserSerializer, UserSerializerOutput, UserUpdateSerializer, IdsUserSerializer, ResponseSerializer
+from users.serializers import UserSerializer, UserSerializerOutput, UserUpdateSerializer, IdsUserSerializer
+from app.serializers import ResponseSerializer
 from users.models import User, StatusEnum
-# from mainServices.api_manager import APIManager
 import requests
-from random import sample
-# from mainServices.api_manager import APIManager
-import json
 from rest_framework.decorators import action
-from rest_framework.views import APIView
-from datetime import datetime
 from authentication.permissions import IsCustomerPermission, IsAdminPermission, IsAuthenticatedPermission
 from drf_yasg.utils import swagger_auto_schema
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    queryset = User.objects.all().order_by('id')
     serializer_class = UserSerializer
     
     def get_authenticators(self):
@@ -171,8 +158,9 @@ class UserViewSet(viewsets.ModelViewSet):
     )
     def destroy(self, request, *args, **kwargs):
         print("user destroy")
+        pk = request.parser_context['kwargs'].get('pk')
         try:
-            instance = self.get_object()
+            instance = User.objects.get(id=pk)
         except User.DoesNotExist:
             return Response({'detail': 'User not found'}, status=status.HTTP_403_FORBIDDEN)
         instance.delete()
@@ -254,7 +242,7 @@ class UserSearchView(generics.ListAPIView):
         type_search_company = self.request.query_params.get('type_search_company', None)
         type_search_zip_code = self.request.query_params.get('type_search_zip_code', None)
                 
-        queryset = User.objects.all()
+        queryset = User.objects.all().order_by('id')
         queryset = queryset.filter(status_enum=StatusEnum.ACTIVE.value)
         
         
@@ -399,7 +387,7 @@ class UserSearchViewOR(generics.ListAPIView):
         zip_code = self.request.query_params.get('zip_code', None)
         
         
-        queryset = User.objects.all()
+        queryset = User.objects.all().order_by('id')
         queryset = queryset.filter(status_enum=StatusEnum.ACTIVE.value)
 
         filters = Q()

@@ -8,14 +8,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ('id', 'created_at', 'role')
 
-    # def create(self, validated_data):
-    #     validated_data['password'] = make_password(validated_data['password'])
-    #     return super().create(validated_data)
-
-class ResponseSerializer(serializers.Serializer):
-    message = serializers.CharField(max_length=255)
-    status = serializers.BooleanField(default=True)
-
 class UserSerializerOutput(serializers.ModelSerializer):
     class Meta:
         model = User
