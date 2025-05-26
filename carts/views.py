@@ -2,17 +2,18 @@ from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework import viewsets, generics, status
 from rest_framework.exceptions import ValidationError
-from wishlist.serializers import WishListSerializer, WishListSerializerOutput, WishListUpdateSerializer, IdsWishListSerializer
+from carts.serializers import CartItemSerializer, CartItemSerializerOutput, CartItemUpdateSerializer, IdsCartItemSerializer
 from app.serializers import ResponseSerializer
-from wishlist.models import WishList, StatusEnum
+from carts.models import CartItem, StatusEnum
 from products.models import SubProduct
+import requests
 from rest_framework.decorators import action
 from authentication.permissions import IsCustomerPermission, IsAdminPermission, IsAuthenticatedPermission
 from drf_yasg.utils import swagger_auto_schema
 
-class WishListViewSet(viewsets.ModelViewSet):
-    queryset = WishList.objects.all().order_by('id')
-    serializer_class = WishListSerializer
+class CartItemViewSet(viewsets.ModelViewSet):
+    queryset = CartItem.objects.all().order_by('id')
+    serializer_class = CartItemSerializer
     
     def get_authenticators(self):
         print("get_authenticators")
@@ -30,12 +31,12 @@ class WishListViewSet(viewsets.ModelViewSet):
     
     def get_serializer_class(self):
         if self.action in ['update', 'partial_update']:
-            return WishListUpdateSerializer
+            return CartItemUpdateSerializer
         elif self.action in ['list', 'retrieve']:
-            return WishListSerializer
+            return CartItemSerializer
         elif self.action in ['multiple_delete', 'multiple_destroy']:
-            return IdsWishListSerializer
-        return WishListSerializer
+            return IdsCartItemSerializer
+        return CartItemSerializer
 
     # loc dau vao cua cac phuong thuc get
     def get_queryset(self):
@@ -45,7 +46,7 @@ class WishListViewSet(viewsets.ModelViewSet):
         filter_kwargs = {}
 
         for param, value in params.items():
-            if param in [field.name for field in WishList._meta.get_fields()]:
+            if param in [field.name for field in CartItem._meta.get_fields()]:
                 filter_kwargs[param] = value
         queryset = queryset.filter(status_enum=StatusEnum.ACTIVE.value, **filter_kwargs)
         return queryset
@@ -53,28 +54,28 @@ class WishListViewSet(viewsets.ModelViewSet):
     #read all
     def list(self, request, *args, **kwargs):
     # def custom_list(self, request):
-        print("wishList list")
+        print("cartItem list")
         queryset = self.filter_queryset(self.get_queryset())
 
         page = self.paginate_queryset(queryset)
         if page is not None:
-            serializer = WishListSerializerOutput(page, many=True)
+            serializer = CartItemSerializerOutput(page, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = WishListSerializerOutput(queryset, many=True)
+        serializer = CartItemSerializerOutput(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     
     def retrieve(self, request, *args, **kwargs):
-        print("wishList retrieve")
+        print("cartItem retrieve")
         return super().retrieve(request, *args, **kwargs)
     
     @swagger_auto_schema(
-        request_body=WishListUpdateSerializer,
+        request_body=CartItemUpdateSerializer,
         responses={200: ResponseSerializer}
     )
     def create(self, request, *args, **kwargs):
-        print("wishList create")
+        print("cartItem create")
         data = request.data.copy()
         user_id = request.user.id
         data['user'] = user_id
@@ -86,15 +87,14 @@ class WishListViewSet(viewsets.ModelViewSet):
                 data['sub_product'] = sub_product.id
             except SubProduct.DoesNotExist:
                 return Response({'detail': 'SubProduct not found'}, status=status.HTTP_403_FORBIDDEN) 
-        wishList = WishListSerializer(data=data)
-        print("data", data)
-        if wishList.is_valid():
-            wishList.save()
+        cartItem = CartItemSerializer(data=data)
+        if cartItem.is_valid():
+            cartItem.save()
         else:
             return Response(
-                {"detail": "WishList is invalid",  "errors": wishList.errors}, status=status.HTTP_400_BAD_REQUEST
+                {"detail": "CartItem is invalid",  "errors": cartItem.errors}, status=status.HTTP_400_BAD_REQUEST
             )
-        return Response({"wishList": wishList.data}, status=status.HTTP_201_CREATED)
+        return Response({"cartItem": cartItem.data}, status=status.HTTP_201_CREATED)
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
@@ -107,19 +107,19 @@ class WishListViewSet(viewsets.ModelViewSet):
                 "detail": "You do not have permission to perform this action."
             }, status=status.HTTP_403_FORBIDDEN)
 
-        wishList = WishListSerializer(instance, data=data, partial=partial)
-        wishList.is_valid(raise_exception=True)
-        wishList.save()
+        cartItem = CartItemSerializer(instance, data=data, partial=partial)
+        cartItem.is_valid(raise_exception=True)
+        cartItem.save()
 
-        wishListModel = WishList.objects.get(id=wishList.data.get('id'))
+        cartItemModel = CartItem.objects.get(id=cartItem.data.get('id'))
 
-        wishListOutput = WishListSerializerOutput(wishListModel)
+        cartItemOutput = CartItemSerializerOutput(cartItemModel)
     
-        return Response(wishListOutput.data, status=status.HTTP_200_OK)
+        return Response(cartItemOutput.data, status=status.HTTP_200_OK)
 
 
     def partial_update(self, request, *args, **kwargs):
-        print("wishList partial_update")
+        print("cartItem partial_update")
         partial = kwargs.pop('partial', True)
         instance = self.get_object()
         data = request.data.copy()
@@ -130,26 +130,26 @@ class WishListViewSet(viewsets.ModelViewSet):
                 "detail": "You do not have permission to perform this action."
             }, status=status.HTTP_403_FORBIDDEN)
         
-        wishList = WishListSerializer(instance, data=data, partial=partial)
-        wishList.is_valid(raise_exception=True)
-        wishList.save()
+        cartItem = CartItemSerializer(instance, data=data, partial=partial)
+        cartItem.is_valid(raise_exception=True)
+        cartItem.save()
 
-        wishListModel = WishList.objects.get(id=wishList.data.get('id'))
+        cartItemModel = CartItem.objects.get(id=cartItem.data.get('id'))
 
-        wishListOutput = WishListSerializerOutput(wishListModel)
+        cartItemOutput = CartItemSerializerOutput(cartItemModel)
     
-        return Response(wishListOutput.data, status=status.HTTP_200_OK)
+        return Response(cartItemOutput.data, status=status.HTTP_200_OK)
     
     @swagger_auto_schema(
         responses={200: ResponseSerializer}
     )
     def destroy(self, request, *args, **kwargs):
-        print("wishList destroy")
+        print("cartItem destroy")
         pk = request.parser_context['kwargs'].get('pk')
         try:
-            instance = WishList.objects.get(id=pk)
-        except WishList.DoesNotExist:
-            return Response({'detail': 'WishList not found'}, status=status.HTTP_403_FORBIDDEN)
+            instance = CartItem.objects.get(id=pk)
+        except CartItem.DoesNotExist:
+            return Response({'detail': 'CartItem not found'}, status=status.HTTP_403_FORBIDDEN)
         
         user_id = request.user.id
         if user_id != instance.user.id:
@@ -158,7 +158,7 @@ class WishListViewSet(viewsets.ModelViewSet):
             }, status=status.HTTP_403_FORBIDDEN)
         
         instance.delete()
-        return Response({'message': 'WishList deleted successfully!'}, status=status.HTTP_200_OK)
+        return Response({'message': 'CartItem deleted successfully!'}, status=status.HTTP_200_OK)
 
     # soft delete
     @swagger_auto_schema(
@@ -166,7 +166,7 @@ class WishListViewSet(viewsets.ModelViewSet):
     )
     @action(detail=True, methods=['delete'], url_path='soft-delete')
     def soft_delete(self, request, pk=None):
-        print("wishList soft_delete")
+        print("cartItem soft_delete")
         instance = self.get_object()
 
         user_id = request.user.id
@@ -176,10 +176,10 @@ class WishListViewSet(viewsets.ModelViewSet):
             }, status=status.HTTP_403_FORBIDDEN)
 
         if instance.status_enum == StatusEnum.DELETED.value:
-            return Response({'detail': 'WishList already soft deleted'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'detail': 'CartItem already soft deleted'}, status=status.HTTP_400_BAD_REQUEST)
         instance.status_enum = StatusEnum.DELETED.value
         instance.save()
-        return Response({'detail': 'WishList soft deleted successfully'}, status=status.HTTP_200_OK)
+        return Response({'detail': 'CartItem soft deleted successfully'}, status=status.HTTP_200_OK)
     
 
     @action(detail=False, methods=['post'], url_path='multiple-delete')
@@ -187,24 +187,24 @@ class WishListViewSet(viewsets.ModelViewSet):
         responses={200: ResponseSerializer}
     )
     def multiple_delete(self, request):
-        print("wishList multiple_delete")
+        print("cartItem multiple_delete")
 
         ids = request.data.get('ids', [])
         if not ids:
-            return Response({'message': 'No wishList IDs provided'}, status=status.HTTP_400_BAD_REQUEST)
-        wishLists = WishList.objects.filter(id__in=ids) 
-        if not wishLists.exists():
-            return Response({'message': 'No wishLists found with the provided IDs'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'message': 'No cartItem IDs provided'}, status=status.HTTP_400_BAD_REQUEST)
+        cartItems = CartItem.objects.filter(id__in=ids) 
+        if not cartItems.exists():
+            return Response({'message': 'No cartItems found with the provided IDs'}, status=status.HTTP_404_NOT_FOUND)
         
         user_id = request.user.id
-        for instance in wishLists: 
+        for instance in cartItems: 
             if user_id != instance.user.id:
                 return Response({
                     "detail": "You do not have permission to perform this action."
                 }, status=status.HTTP_403_FORBIDDEN)
 
-        wishLists.update(status_enum=StatusEnum.DELETED.value)
-        return Response({'message': 'WishLists soft deleted successfully'}, status=status.HTTP_200_OK)
+        cartItems.update(status_enum=StatusEnum.DELETED.value)
+        return Response({'message': 'CartItems soft deleted successfully'}, status=status.HTTP_200_OK)
     
     # multiple destroy
     @action(detail=False, methods=['post'], url_path='multiple-destroy')
@@ -212,45 +212,45 @@ class WishListViewSet(viewsets.ModelViewSet):
         responses={200: ResponseSerializer}
     )
     def multiple_destroy(self, request):
-        print('wishList multiple_destroy')
+        print('cartItem multiple_destroy')
         ids = request.data.get('ids', [])
         if not ids:
-            return Response({'message': 'No wishList IDs provided'}, status=status.HTTP_400_BAD_REQUEST)
-        wishLists = WishList.objects.filter(id__in=ids) 
-        if not wishLists.exists():
-            return Response({'message': 'No wishLists found with the provided IDs'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'message': 'No cartItem IDs provided'}, status=status.HTTP_400_BAD_REQUEST)
+        cartItems = CartItem.objects.filter(id__in=ids) 
+        if not cartItems.exists():
+            return Response({'message': 'No cartItems found with the provided IDs'}, status=status.HTTP_404_NOT_FOUND)
         
         user_id = request.user.id
-        for wishList in wishLists:
-            if user_id != wishList.user.id:
+        for cartItem in cartItems:
+            if user_id != cartItem.user.id:
                 return Response({
                     "detail": "You do not have permission to perform this action."
                 }, status=status.HTTP_403_FORBIDDEN)
-            wishList.delete()
+            cartItem.delete()
 
-        return Response({'message': 'WishLists destroy successfully'}, status=status.HTTP_200_OK)
+        return Response({'message': 'CartItems destroy successfully'}, status=status.HTTP_200_OK)
     
     # multiple destroy
     @action(detail=False, methods=['get'], url_path='my-cart')
     @swagger_auto_schema(
-        responses={200: WishListSerializerOutput}
+        responses={200: CartItemSerializerOutput}
     )
     def my_cart(self, request):
-        print('wishList my_cart')
+        print('cartItem my_cart')
 
         user_id = request.user.id
         # print("user_id", user_id)
         # try:
-        #     wishLists = self.queryset.filter(user=user_id)
-        # except WishList.DoesNotExist: 
+        #     cartItems = self.queryset.filter(user=user_id)
+        # except CartItem.DoesNotExist: 
         #     return Response({'detail': 'No item found in my cart'}, status=status.HTTP_403_FORBIDDEN) 
-        wishLists = self.queryset.filter(user=user_id, status_enum=StatusEnum.ACTIVE.value)
+        cartItems = self.queryset.filter(user=user_id, status_enum=StatusEnum.ACTIVE.value)
 
-        if not wishLists.exists():
+        if not cartItems.exists():
             return Response({'detail': 'No item found in my cart'}, status=status.HTTP_404_NOT_FOUND)
 
-        # print("wishLists", wishLists)
-        wishListOutput = WishListSerializerOutput(wishLists, many=True)
+        # print("cartItems", cartItems)
+        cartItemOutput = CartItemSerializerOutput(cartItems, many=True)
 
-        return Response(wishListOutput.data, status=status.HTTP_200_OK)
+        return Response(cartItemOutput.data, status=status.HTTP_200_OK)
 

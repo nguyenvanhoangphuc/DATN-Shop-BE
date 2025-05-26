@@ -2,6 +2,10 @@ from django.db import models
 from enum import Enum
 from app.models import StatusEnum
 
+class GenderEnum(models.IntegerChoices):
+    MALE = 0, 'Male'
+    FEMALE = 1, 'Female'
+
 class User(models.Model):
     ROLE_CHOICES = [
         ('customer', 'Customer'),
@@ -17,6 +21,7 @@ class User(models.Model):
     refresh_token = models.CharField(max_length=255, null= True, blank=True)
     image_url = models.TextField(blank=True, null=True)
     phone = models.CharField(max_length=20, blank=True, null=True)
+    gender = models.IntegerField(choices=GenderEnum.choices, default=GenderEnum.MALE)
     address = models.TextField(blank=True, null=True)
     region = models.CharField(max_length=100, blank=True, null=True)
     company = models.CharField(max_length=255, blank=True, null=True)

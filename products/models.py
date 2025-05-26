@@ -23,7 +23,7 @@ class Category(models.Model):
 # ==========================
 class Material(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255, null=False)
+    name = models.CharField(max_length=255, null=False, unique=True)
     description = models.TextField(blank=True, null=True)
     status_enum = models.IntegerField(choices=StatusEnum.choices, default=StatusEnum.ACTIVE)
 
@@ -37,7 +37,7 @@ class Material(models.Model):
 # ==========================
 class Brand(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255, null=False)
+    name = models.CharField(max_length=255, null=False, unique=True)
     description = models.TextField(blank=True, null=True)
     status_enum = models.IntegerField(choices=StatusEnum.choices, default=StatusEnum.ACTIVE)
 
@@ -50,7 +50,7 @@ class Brand(models.Model):
 # ==========================
 class Product(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255, null=False)
+    name = models.CharField(max_length=255, null=False, unique=True)
     description = models.TextField(blank=True, null=True)
     detail_description = models.TextField(blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="products")
@@ -97,18 +97,3 @@ class ProductSubProduct(models.Model):
 
     def __str__(self):
         return f"{self.product.name} - {self.sub_product.color} ({self.sub_product.size})"
-
-
-# ==========================
-# ORDER STATUS ENUM
-# ==========================
-class OrderStatus(models.TextChoices):
-    PENDING = 'pending', _("Pending - Order created but not paid")
-    PROCESSING = 'processing', _("Processing - Order paid and being prepared")
-    SHIPPED = 'shipped', _("Shipped - Order sent to shipping company")
-    DELIVERED = 'delivered', _("Delivered - Order successfully delivered")
-    CANCELED = 'canceled', _("Canceled - Order canceled by user or system")
-    REFUNDED = 'refunded', _("Refunded - Order refunded")
-    FAILED = 'failed', _("Failed - Payment failed")
-    RETURNED = 'returned', _("Returned - Order returned by customer")
-
