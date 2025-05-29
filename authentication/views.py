@@ -164,6 +164,11 @@ class Logout(GenericAPIView):
                 refresh_token, settings.JWT_SECRET_KEY, algorithms="HS256"
             )
             user = User.objects.get(username=payload["username"])
+            if user.refresh_token == "":
+                return Response(
+                    {"detail": "You are not logged in"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
             user.refresh_token = ""
             user.save()
         except jwt.DecodeError as identifier:
