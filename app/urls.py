@@ -13,4 +13,6 @@ urlpatterns = [
     path('', include('reviews.urls')),
     path('', include('shipping.urls')),
     path('', include('wishlist.urls')),
+    path('', include('chat_app.urls')),
+    path('', include("virtualtryon.urls")),
 ]
