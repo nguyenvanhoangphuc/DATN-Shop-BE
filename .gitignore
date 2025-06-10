@@ -3,5 +3,9 @@ myenv/
 __pycache__/
 **/__pycache__/
 AddDatabase/
+AddDBProduct/
 add_users.py
 **/migrations/**
+CrawlDB/
+add_db*.py
+**/vector_db

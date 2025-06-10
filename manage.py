@@ -4,7 +4,7 @@ import sys
 
 def main():
     # Lấy biến môi trường DJANGO_ENV (mặc định là "dev")
-    env = os.getenv("DJANGO_ENV", "dev")
+    env = os.getenv("DJANGO_ENV", "prod")
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", f"config.settings.{env}")
     
     try:

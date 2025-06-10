@@ -6,7 +6,7 @@ import django
 # Thiết lập môi trường Django
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.dev")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.prod")
 django.setup()
 
 from products.models import SubProduct, ProductSubProduct
