@@ -1,9 +1,9 @@
 from .base import *
 import os
 
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "4b50-2402-800-629c-89b0-a13d-253c-513-8f9b.ngrok-free.app"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 DATABASES = {
     "default": {

@@ -19,6 +19,7 @@ from django.urls import path, include
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from django.http import Http404
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -34,12 +35,17 @@ schema_view = get_schema_view(
    authentication_classes= (),
 )
 
+def not_found_view(request):
+    raise Http404("Đường dẫn không đúng hoặc bị thừa dấu \ cuối cùng.")
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin', admin.site.urls),
     path('api/', include('app.urls')),  # app chứa các API như login, register...
     
     # Swagger routes
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    path('swagger', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('redoc', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    # Not fault page
+    path('/:pk', not_found_view),
 ]
 
