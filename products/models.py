@@ -69,8 +69,8 @@ class Product(models.Model):
 # ==========================
 class SubProduct(models.Model):
     id = models.AutoField(primary_key=True)
-    color = models.CharField(max_length=50, null=False)
-    size = models.CharField(max_length=20, null=False)
+    color = models.CharField(max_length=100, null=False)
+    size = models.CharField(max_length=100, null=False)
     old_price = models.BigIntegerField(null=True, blank=True)
     discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     price = models.BigIntegerField(null=False)

@@ -2,13 +2,15 @@ from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework import viewsets, generics, status
 from rest_framework.exceptions import ValidationError
-from products.serializers import ProductSerializer, ProductSerializerOutput, ProductUpdateSerializer, IdsProductSerializer, CategorySerializer, CategorySerializerOutput, CategoryUpdateSerializer, IdsCategorySerializer, MaterialSerializer, MaterialSerializerOutput, MaterialUpdateSerializer, IdsMaterialSerializer, BrandSerializer, BrandSerializerOutput, BrandUpdateSerializer, IdsBrandSerializer, SubProductSerializer, SubProductSerializerOutput, SubProductUpdateSerializer, IdsSubProductSerializer, ProductSubProductSerializer, ProductSubProductSerializerOutput, ProductSubProductUpdateSerializer, IdsProductSubProductSerializer
+from products.serializers import ProductSerializer, ProductSerializerOutput, ProductSerializerDetail, ProductUpdateSerializer, IdsProductSerializer, CategorySerializer, CategorySerializerOutput, CategoryUpdateSerializer, IdsCategorySerializer, MaterialSerializer, MaterialSerializerOutput, MaterialUpdateSerializer, IdsMaterialSerializer, BrandSerializer, BrandSerializerOutput, BrandUpdateSerializer, IdsBrandSerializer, SubProductSerializer, SubProductSerializerOutput, SubProductUpdateSerializer, IdsSubProductSerializer, ProductSubProductSerializer, ProductSubProductSerializerOutput, ProductSubProductUpdateSerializer, IdsProductSubProductSerializer
 from app.serializers import ResponseSerializer
 from products.models import Category, Material, Brand, Product, StatusEnum, SubProduct, ProductSubProduct
 import requests
 from rest_framework.decorators import action
 from authentication.permissions import IsCustomerPermission, IsAdminPermission, IsAuthenticatedPermission
 from drf_yasg.utils import swagger_auto_schema
+from django.db.models import Sum, Min, Max, Value, CharField, FilteredRelation
+from django.db.models.functions import Concat
 
 ## generic
 def soft_delete_subproduct(sub_product):
@@ -50,7 +52,7 @@ def recursive_soft_delete(category):
 
 ## Category
 class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
+    queryset = Category.objects.all().order_by('id')
     serializer_class = CategorySerializer
     
     def get_authenticators(self):
@@ -87,6 +89,9 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
         for param, value in params.items():
             if param in [field.name for field in Category._meta.get_fields()]:
+                if param == 'parent': 
+                    if value == 'null':
+                        value = None 
                 filter_kwargs[param] = value
         queryset = queryset.filter(status_enum=StatusEnum.ACTIVE.value, **filter_kwargs)
         return queryset
@@ -629,8 +634,10 @@ class ProductViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action in ['update', 'partial_update']:
             return ProductUpdateSerializer
-        elif self.action in ['list', 'retrieve']:
-            return ProductSerializer
+        elif self.action in ['list']:
+            return ProductSerializerOutput
+        elif self.action in ['retrieve']:
+            return ProductSerializerDetail
         elif self.action in ['multiple_delete', 'multiple_destroy']:
             return IdsProductSerializer
         return ProductSerializer
@@ -841,30 +848,191 @@ class ProductViewSet(viewsets.ModelViewSet):
         return Response({'message': 'Products destroy successfully'}, status=status.HTTP_200_OK)
 
 
+## Bộ lọc theo name, description, detail_description, category, brand, material
+# class ProductSearchView(generics.ListAPIView):
+#     serializer_class = ProductSerializer
+#     permission_classes = []
 
+#     def get_all_subcategories(self, parent_category):
+#         subcategories = Category.objects.filter(parent=parent_category)
+#         all_subcategories = list(subcategories)
+#         for subcategory in subcategories:
+#             all_subcategories.extend(self.get_all_subcategories(subcategory))
+#         return all_subcategories
+    
+#     def get_queryset(self):
+
+#         name = self.request.query_params.get('name', None)
+#         description = self.request.query_params.get('description', None)
+#         detail_description = self.request.query_params.get('detail_description', None)
+#         category = self.request.query_params.get('category', None)
+#         brand = self.request.query_params.get('brand', None)
+#         material = self.request.query_params.get('material', None)
+#         sort_by = self.request.query_params.get('sort_by', None)
+        
+#         type_search_name = self.request.query_params.get('type_search_name', None)
+#         type_search_description = self.request.query_params.get('type_search_description', None)
+#         type_search_detail_description = self.request.query_params.get('type_search_detail_description', None)
+#         type_search_category = self.request.query_params.get('type_search_category', None)
+#         type_search_brand = self.request.query_params.get('type_search_brand', None)
+#         type_search_material = self.request.query_params.get('type_search_material', None)
+
+#         # queryset = Product.objects.all().order_by('id')
+#         queryset = Product.objects.all()
+#         queryset = queryset.filter(status_enum=StatusEnum.ACTIVE.value)
+#         # Sử dụng annotate để tính toán giá trị cần thiết
+#         queryset = queryset.annotate(
+#             active_sub_products=FilteredRelation(
+#                 'sub_products__sub_product',
+#                 condition=Q(sub_products__sub_product__status_enum=StatusEnum.ACTIVE.value)
+#             ),
+#             sold_per_month=Sum('active_sub_products__saled_per_month'),
+#             min_price=Min('active_sub_products__price'),
+#             max_price=Max('active_sub_products__price')
+#         )
+
+#         if name:
+#             if type_search_name == 'exact':
+#                 queryset = queryset.filter(name=name)
+#             elif type_search_name == 'contains':
+#                 queryset = queryset.filter(name__icontains=name)
+#             elif type_search_name == 'startswith':
+#                 queryset = queryset.filter(name__istartswith=name)
+#             elif type_search_name == 'endswith':
+#                 queryset = queryset.filter(name__iendswith=name)
+#             else:
+#                 raise ValidationError("Require name type search in ['exact', 'contains', 'startswith', 'endswith]")
+#         if description:
+#             if type_search_description == 'exact':
+#                 queryset = queryset.filter(description=description)
+#             elif type_search_description == 'contains':
+#                 queryset = queryset.filter(description__icontains=description)
+#             elif type_search_description == 'startswith':
+#                 queryset = queryset.filter(description__istartswith=description)
+#             elif type_search_description == 'endswith':
+#                 queryset = queryset.filter(description__iendswith=description)
+#             else:
+#                 raise ValidationError("Require description type search in ['exact', 'contains', 'startswith', 'endswith]")
+#         if detail_description and type_search_detail_description:
+#             if type_search_detail_description == 'exact':
+#                 queryset = queryset.filter(detail_description=detail_description)
+#             elif type_search_detail_description == 'contains':
+#                 queryset = queryset.filter(detail_description__icontains=detail_description)
+#             elif type_search_detail_description == 'startswith':
+#                 queryset = queryset.filter(detail_description__istartswith=detail_description)
+#             elif type_search_detail_description == 'endswith':
+#                 queryset = queryset.filter(detail_description__iendswith=detail_description)
+#             else:
+#                 raise ValidationError("Require detail_description type search in ['exact', 'contains', 'startswith', 'endswith]")
+#         if category and type_search_category:
+#             if type_search_category == 'exact':
+#                 queryset = queryset.filter(category=category)
+#             elif type_search_category == 'contains':
+#                 queryset = queryset.filter(category__icontains=category)
+#             elif type_search_category == 'startswith':
+#                 queryset = queryset.filter(category__istartswith=category)
+#             elif type_search_category == 'endswith':
+#                 queryset = queryset.filter(category__iendswith=category)
+#             elif type_search_category == 'parent':
+#                 all_subcategories = self.get_all_subcategories(category)
+#                 # thêm chính nó vào all_subcategories
+#                 all_subcategories.append(category)
+#                 queryset = queryset.filter(category__in=all_subcategories)
+#             else:
+#                 raise ValidationError("Require category type search in ['exact', 'contains', 'startswith', 'endswith', 'parent']")
+#         if brand:
+#             if type_search_brand == 'exact':
+#                 queryset = queryset.filter(brand=brand)
+#             elif type_search_brand == 'contains':
+#                 queryset = queryset.filter(brand__icontains=brand)
+#             elif type_search_brand == 'startswith':
+#                 queryset = queryset.filter(brand__istartswith=brand)
+#             elif type_search_brand == 'endswith':
+#                 queryset = queryset.filter(brand__iendswith=brand)
+#             else:
+#                 raise ValidationError("Require brand type search in ['exact', 'contains', 'startswith', 'endswith]")
+#         if material:
+#             if type_search_material == 'exact':
+#                 queryset = queryset.filter(material=material)
+#             elif type_search_material == 'contains':
+#                 queryset = queryset.filter(material__icontains=material)
+#             elif type_search_material == 'startswith':
+#                 queryset = queryset.filter(material__istartswith=material)
+#             elif type_search_material == 'endswith':
+#                 queryset = queryset.filter(material__iendswith=material)
+#             else:
+#                 raise ValidationError("Require material type search in ['exact', 'contains', 'startswith', 'endswith]")
+
+#         if sort_by:
+#             if sort_by == 'bestseller': 
+#                 # Sắp xếp theo số lượng bán chạy nhất
+#                 queryset = queryset.order_by('-sold_per_month')
+#             elif sort_by == 'lowtohigh':
+#                 # Sắp xếp theo giá từ thấp đến cao
+#                 queryset = queryset.order_by('min_price')
+#                 # đảo ngược lại thứ tự sắp xếp
+#                 # queryset = queryset.order_by('-')
+#             elif sort_by == 'hightolow':
+#                 # Sắp xếp theo giá từ cao đến thấp
+#                 queryset = queryset.order_by('-max_price')
+#             else: 
+#                 return ValidationError("Require sort_by in ['bestseller', 'lowtohigh', 'hightolow']")
+
+#         return queryset
+    
+    
+#     def list(self, request, *args, **kwargs):
+#         queryset = self.get_queryset()        
+#         page = self.paginate_queryset(queryset)
+#         if page is not None:
+#             serializer = ProductSerializerOutput(page, many=True)
+#             return self.get_paginated_response(serializer.data)
+#         serializer = self.get_serializer(queryset, many=True)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+## Bộ lọc theo name, description, detail_description, categories, brands, materials
 class ProductSearchView(generics.ListAPIView):
     serializer_class = ProductSerializer
     permission_classes = []
-    
+
     def get_queryset(self):
         name = self.request.query_params.get('name', None)
         description = self.request.query_params.get('description', None)
         detail_description = self.request.query_params.get('detail_description', None)
-        category = self.request.query_params.get('category', None)
-        brand = self.request.query_params.get('brand', None)
-        material = self.request.query_params.get('material', None)
-        
+        categories = self.request.query_params.get('categories', None)
+        brands = self.request.query_params.get('brands', None)
+        materials = self.request.query_params.get('materials', None)
+        keyword = self.request.query_params.get('keyword', None)
+        sort_by = self.request.query_params.get('sort_by', None)
+
         type_search_name = self.request.query_params.get('type_search_name', None)
+        type_search_keyword = self.request.query_params.get('type_search_keyword', None)
         type_search_description = self.request.query_params.get('type_search_description', None)
         type_search_detail_description = self.request.query_params.get('type_search_detail_description', None)
-        type_search_category = self.request.query_params.get('type_search_category', None)
-        type_search_brand = self.request.query_params.get('type_search_brand', None)
-        type_search_material = self.request.query_params.get('type_search_material', None)
-                
-        queryset = Product.objects.all().order_by('id')
-        queryset = queryset.filter(status_enum=StatusEnum.ACTIVE.value)
-        
-        
+
+        queryset = Product.objects.filter(status_enum=StatusEnum.ACTIVE.value)
+
+        queryset = queryset.annotate(
+            active_sub_products=FilteredRelation(
+                'sub_products__sub_product',
+                condition=Q(sub_products__sub_product__status_enum=StatusEnum.ACTIVE.value)
+            ),
+            sold_per_month=Sum('active_sub_products__saled_per_month'),
+            min_price=Min('active_sub_products__price'),
+            max_price=Max('active_sub_products__price'), 
+            # name + description + detail_description + categories + brands + materials
+            text_search=Concat(
+                'name', Value(' '), 
+                'description', Value(' '), 
+                'detail_description', Value(' '), 
+                'category__name', Value(' '), 
+                'brand__name', Value(' '), 
+                'material__name',
+                output_field=CharField()
+            )
+        )
+
         if name:
             if type_search_name == 'exact':
                 queryset = queryset.filter(name=name)
@@ -875,7 +1043,20 @@ class ProductSearchView(generics.ListAPIView):
             elif type_search_name == 'endswith':
                 queryset = queryset.filter(name__iendswith=name)
             else:
-                raise ValidationError("Require name type search in ['exact', 'contains', 'startswith', 'endswith]")
+                raise ValidationError("Require name type search in ['exact', 'contains', 'startswith', 'endswith']")
+        if keyword:
+            if type_search_keyword == 'exact':
+                queryset = queryset.filter(text_search=keyword)
+            elif type_search_keyword == 'contains':
+                queryset = queryset.filter(text_search__icontains=keyword)
+                if queryset.exists():
+                    print("key search", queryset[0].text_search)
+            elif type_search_keyword == 'startswith':
+                queryset = queryset.filter(text_search__istartswith=keyword)
+            elif type_search_keyword == 'endswith':
+                queryset = queryset.filter(text_search__iendswith=keyword)
+            else:
+                raise ValidationError("Require keyword type search in ['exact', 'contains', 'startswith', 'endswith']")
         if description:
             if type_search_description == 'exact':
                 queryset = queryset.filter(description=description)
@@ -886,8 +1067,9 @@ class ProductSearchView(generics.ListAPIView):
             elif type_search_description == 'endswith':
                 queryset = queryset.filter(description__iendswith=description)
             else:
-                raise ValidationError("Require description type search in ['exact', 'contains', 'startswith', 'endswith]")
-        if detail_description and type_search_detail_description:
+                raise ValidationError("Require description type search in ['exact', 'contains', 'startswith', 'endswith']")
+
+        if detail_description:
             if type_search_detail_description == 'exact':
                 queryset = queryset.filter(detail_description=detail_description)
             elif type_search_detail_description == 'contains':
@@ -897,53 +1079,53 @@ class ProductSearchView(generics.ListAPIView):
             elif type_search_detail_description == 'endswith':
                 queryset = queryset.filter(detail_description__iendswith=detail_description)
             else:
-                raise ValidationError("Require detail_description type search in ['exact', 'contains', 'startswith', 'endswith]")
-        if category and type_search_category:
-            if type_search_category == 'exact':
-                queryset = queryset.filter(category=category)
-            elif type_search_category == 'contains':
-                queryset = queryset.filter(category__icontains=category)
-            elif type_search_category == 'startswith':
-                queryset = queryset.filter(category__istartswith=category)
-            elif type_search_category == 'endswith':
-                queryset = queryset.filter(category__iendswith=category)
+                raise ValidationError("Require detail_description type search in ['exact', 'contains', 'startswith', 'endswith']")
+
+        if categories:
+            category_ids = [int(c.strip()) for c in categories.split(',') if c.strip().isdigit()]
+            all_ids = set(category_ids)
+            for cid in category_ids:
+                subcats = self.get_all_subcategories(cid)
+                all_ids.update([c.id for c in subcats])
+            queryset = queryset.filter(category__in=all_ids)
+
+        if brands:
+            brand_ids = [int(b.strip()) for b in brands.split(',') if b.strip().isdigit()]
+            queryset = queryset.filter(brand__in=brand_ids)
+
+        if materials:
+            material_ids = [int(m.strip()) for m in materials.split(',') if m.strip().isdigit()]
+            queryset = queryset.filter(material__in=material_ids)
+
+        if sort_by:
+            if sort_by == 'bestseller':
+                queryset = queryset.order_by('-sold_per_month')
+            elif sort_by == 'lowtohigh':
+                queryset = queryset.order_by('min_price')
+            elif sort_by == 'hightolow':
+                queryset = queryset.order_by('-max_price')
             else:
-                raise ValidationError("Require category type search in ['exact', 'contains', 'startswith', 'endswith]")
-        if brand:
-            if type_search_brand == 'exact':
-                queryset = queryset.filter(brand=brand)
-            elif type_search_brand == 'contains':
-                queryset = queryset.filter(brand__icontains=brand)
-            elif type_search_brand == 'startswith':
-                queryset = queryset.filter(brand__istartswith=brand)
-            elif type_search_brand == 'endswith':
-                queryset = queryset.filter(brand__iendswith=brand)
-            else:
-                raise ValidationError("Require brand type search in ['exact', 'contains', 'startswith', 'endswith]")
-        if material:
-            if type_search_material == 'exact':
-                queryset = queryset.filter(material=material)
-            elif type_search_material == 'contains':
-                queryset = queryset.filter(material__icontains=material)
-            elif type_search_material == 'startswith':
-                queryset = queryset.filter(material__istartswith=material)
-            elif type_search_material == 'endswith':
-                queryset = queryset.filter(material__iendswith=material)
-            else:
-                raise ValidationError("Require material type search in ['exact', 'contains', 'startswith', 'endswith]")
-        
+                raise ValidationError("Require sort_by in ['bestseller', 'lowtohigh', 'hightolow']")
+
         return queryset
-    
+
+    def get_all_subcategories(self, parent_category):
+        subcategories = Category.objects.filter(parent=parent_category)
+        all_subcategories = list(subcategories)
+        for subcategory in subcategories:
+            all_subcategories.extend(self.get_all_subcategories(subcategory))
+        return all_subcategories
     
     def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()        
+        queryset = self.get_queryset()
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = ProductSerializerOutput(page, many=True)
             return self.get_paginated_response(serializer.data)
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+        
+        
     
 class ProductSearchViewOR(generics.ListAPIView):
     serializer_class = ProductSerializer

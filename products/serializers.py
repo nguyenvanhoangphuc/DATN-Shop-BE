@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from .models import Product, Category, Material, Brand, SubProduct, ProductSubProduct
 from django.contrib.auth.hashers import make_password
+from app.models import StatusEnum
+from django.db.models import Min, Max, Sum
 
 ## Category
 class CategorySerializer(serializers.ModelSerializer):
@@ -69,10 +71,34 @@ class ProductSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'created_at')
 
 class ProductSerializerOutput(serializers.ModelSerializer):
+    min_price = serializers.SerializerMethodField()
+    max_price = serializers.SerializerMethodField()
+    sold_per_month = serializers.SerializerMethodField()
     class Meta:
         model = Product
-        fields = ('id', 'name', 'description', 'detail_description', 'category', 'brand', 'material', 'image_url')
+        fields = ('id', 'name', 'description', 'detail_description', 'category', 'brand', 'material', 'image_url', 'min_price', 'max_price', 'sold_per_month')
         read_only_fields = ('id', 'created_at')
+
+    def get_min_price(self, obj):
+        return ProductSubProduct.objects.filter(
+            product=obj,
+            status_enum=StatusEnum.ACTIVE,
+            sub_product__status_enum=StatusEnum.ACTIVE
+        ).aggregate(min_price=Min('sub_product__price'))['min_price']
+
+    def get_max_price(self, obj):
+        return ProductSubProduct.objects.filter(
+            product=obj,
+            status_enum=StatusEnum.ACTIVE,
+            sub_product__status_enum=StatusEnum.ACTIVE
+        ).aggregate(max_price=Max('sub_product__price'))['max_price']
+    
+    def get_sold_per_month(self, obj):
+        return ProductSubProduct.objects.filter(
+            product=obj,
+            status_enum=StatusEnum.ACTIVE,
+            sub_product__status_enum=StatusEnum.ACTIVE
+        ).aggregate(sold_per_month=Sum('sub_product__saled_per_month'))['sold_per_month']
 
 class ProductUpdateSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(required=False)
@@ -140,3 +166,50 @@ class ProductSubProductUpdateSerializer(serializers.ModelSerializer):
     
 class IdsProductSubProductSerializer(serializers.Serializer):
     ids = serializers.ListField(child=serializers.IntegerField(), write_only=True)
+
+
+class ProductSerializerDetail(serializers.ModelSerializer):
+    min_price = serializers.SerializerMethodField()
+    max_price = serializers.SerializerMethodField()
+    sold_per_month = serializers.SerializerMethodField()
+    sub_products = serializers.SerializerMethodField()
+    category = CategorySerializerOutput(read_only=True)
+    brand = BrandSerializerOutput(read_only=True)
+    material = MaterialSerializerOutput(read_only=True)
+    class Meta:
+        model = Product
+        fields = ('id', 'name', 'description', 'detail_description', 'category', 'brand', 'material', 'image_url', 'min_price', 'max_price', 'sold_per_month', 'sub_products')
+        read_only_fields = ('id', 'created_at')
+
+    def get_min_price(self, obj):
+        return ProductSubProduct.objects.filter(
+            product=obj,
+            status_enum=StatusEnum.ACTIVE,
+            sub_product__status_enum=StatusEnum.ACTIVE
+        ).aggregate(min_price=Min('sub_product__price'))['min_price']
+
+    def get_max_price(self, obj):
+        return ProductSubProduct.objects.filter(
+            product=obj,
+            status_enum=StatusEnum.ACTIVE,
+            sub_product__status_enum=StatusEnum.ACTIVE
+        ).aggregate(max_price=Max('sub_product__price'))['max_price']
+    
+    def get_sold_per_month(self, obj):
+        return ProductSubProduct.objects.filter(
+            product=obj,
+            status_enum=StatusEnum.ACTIVE,
+            sub_product__status_enum=StatusEnum.ACTIVE
+        ).aggregate(sold_per_month=Sum('sub_product__saled_per_month'))['sold_per_month']
+    
+    def get_sub_products(self, obj):
+        # Lấy tất cả các SubProduct liên kết với Product này
+        # và có trạng thái ACTIVE thông qua ProductSubProduct
+        sub_products = SubProduct.objects.filter(
+            products__product=obj,
+            products__status_enum=StatusEnum.ACTIVE,
+            status_enum=StatusEnum.ACTIVE
+        ).distinct()
+
+        return SubProductSerializer(sub_products, many=True).data
+    
