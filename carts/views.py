@@ -87,6 +87,24 @@ class CartItemViewSet(viewsets.ModelViewSet):
                 data['sub_product'] = sub_product.id
             except SubProduct.DoesNotExist:
                 return Response({'detail': 'SubProduct not found'}, status=status.HTTP_403_FORBIDDEN) 
+        # Check if the user already has a cart item for this sub_product
+        existing_cart_item = CartItem.objects.filter(
+            user=user_id, 
+            sub_product=sub_product_id 
+        ).first()
+
+        if existing_cart_item:
+            if existing_cart_item.status_enum == StatusEnum.DELETED.value:
+                existing_cart_item.status_enum = StatusEnum.ACTIVE.value
+                existing_cart_item.save()
+                cartItem = CartItemSerializerOutput(existing_cart_item)
+                return Response({"cartItem": cartItem.data}, status=status.HTTP_200_OK)
+            else:
+                return Response(
+                    {"detail": "Bạn đã có sản phẩm này trong giỏ hàng."}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
         cartItem = CartItemSerializer(data=data)
         if cartItem.is_valid():
             cartItem.save()
@@ -247,7 +265,8 @@ class CartItemViewSet(viewsets.ModelViewSet):
         cartItems = self.queryset.filter(user=user_id, status_enum=StatusEnum.ACTIVE.value)
 
         if not cartItems.exists():
-            return Response({'detail': 'No item found in my cart'}, status=status.HTTP_404_NOT_FOUND)
+            # return Response({'detail': 'No item found in my cart'}, status=status.HTTP_404_NOT_FOUND)
+            return Response([], status=status.HTTP_200_OK)  # Return empty list if no items found
 
         # print("cartItems", cartItems)
         cartItemOutput = CartItemSerializerOutput(cartItems, many=True)
