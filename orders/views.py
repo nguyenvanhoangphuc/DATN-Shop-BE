@@ -244,7 +244,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     def my_orders(self, request):
         print("order my_orders")
         user_id = request.user.id
-        queryset = self.queryset.filter(user_id=user_id, status_enum=StatusEnum.ACTIVE.value)
+        queryset = self.queryset.filter(user_id=user_id, status_enum=StatusEnum.ACTIVE.value).order_by('-created_at')
         
         if not queryset.exists():
             return Response({'detail': 'No orders found for this user'}, status=status.HTTP_404_NOT_FOUND)

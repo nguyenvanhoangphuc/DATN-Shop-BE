@@ -1,8 +1,8 @@
 from django.urls import path, include
 from . import views
-from rest_framework.routers import DefaultRouter
+from rest_framework.routers import SimpleRouter
 
-router = DefaultRouter()
+router = SimpleRouter(trailing_slash=False)
 router.register(r'order', views.OrderViewSet, basename='order')
 router.register(r'order-item', views.OrderItemViewSet, basename='order-item')
 

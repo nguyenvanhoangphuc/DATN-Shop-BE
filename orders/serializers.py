@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Order, OrderItem
 from products.serializers import SubProductSerializerOutput
 from django.contrib.auth.hashers import make_password
+from app.models import StatusEnum
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,7 +18,8 @@ class OrderSerializerOutput(serializers.ModelSerializer):
         read_only_fields = ('id', 'created_at')
 
     def get_order_items(self, obj):
-        order_items = obj.order_items.all()
+        # lọc ra các order items liên quan đến order này và status_enum là 'active'
+        order_items = obj.order_items.filter(status_enum=StatusEnum.ACTIVE) 
         return OrderItemSerializerOutput(order_items, many=True).data
 
 class OrderUpdateSerializer(serializers.ModelSerializer):
