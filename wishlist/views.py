@@ -22,7 +22,7 @@ class WishListViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         print("get_permissions")
         print(self.action)
-        if self.action in ['create', 'update', 'partial_update', 'soft_delete', 'destroy', 'multiple_delete', 'multiple_destroy', 'my_cart']: 
+        if self.action in ['create', 'update', 'partial_update', 'soft_delete', 'destroy', 'multiple_delete', 'multiple_destroy', 'my_wishlist']: 
             return [(IsCustomerPermission)()]
         elif self.action in ['list', 'retrieve']:
             return [IsAdminPermission()] 
@@ -231,23 +231,23 @@ class WishListViewSet(viewsets.ModelViewSet):
         return Response({'message': 'WishLists destroy successfully'}, status=status.HTTP_200_OK)
     
     # multiple destroy
-    @action(detail=False, methods=['get'], url_path='my-cart')
+    @action(detail=False, methods=['get'], url_path='my-wishlist')
     @swagger_auto_schema(
         responses={200: WishListSerializerOutput}
     )
-    def my_cart(self, request):
-        print('wishList my_cart')
+    def my_wishlist(self, request):
+        print('wishList my_wishlist')
 
         user_id = request.user.id
         # print("user_id", user_id)
         # try:
         #     wishLists = self.queryset.filter(user=user_id)
         # except WishList.DoesNotExist: 
-        #     return Response({'detail': 'No item found in my cart'}, status=status.HTTP_403_FORBIDDEN) 
+        #     return Response({'detail': 'No item found in my wishlist'}, status=status.HTTP_403_FORBIDDEN) 
         wishLists = self.queryset.filter(user=user_id, status_enum=StatusEnum.ACTIVE.value)
 
         if not wishLists.exists():
-            return Response({'detail': 'No item found in my cart'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'detail': 'No item found in my wishlist'}, status=status.HTTP_404_NOT_FOUND)
 
         # print("wishLists", wishLists)
         wishListOutput = WishListSerializerOutput(wishLists, many=True)
